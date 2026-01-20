@@ -1,8 +1,9 @@
-import LayerModel3D from '@/components/atoms/LayerModel3D';
-import { Environment, PerspectiveCamera } from '@react-three/drei/native';
-import { Canvas } from '@react-three/fiber/native';
-import React from 'react';
+import { Environment } from '@react-three/drei/native';
+import { Canvas, useFrame } from '@react-three/fiber/native';
+import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Group } from 'three';
+import LayerModel3D from '../atoms/LayerModel3D';
 
 interface Layer {
   modelPath: any;
@@ -14,36 +15,64 @@ interface AssembledBurger3DProps {
   size?: number;
 }
 
+function RotatingBurger({ layers }: { layers: Layer[] }) {
+  const groupRef = useRef<Group>(null);
+
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.2;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {layers.map((layer, index) => (
+        <LayerModel3D
+          key={index}
+          modelPath={layer.modelPath}
+          position={[0, layer.yOffset, 0]}
+          scale={1}
+        />
+      ))}
+    </group>
+  );
+}
+
 const AssembledBurger3D = ({ layers, size = 350 }: AssembledBurger3DProps) => {
+  // Calcular el centro Y de la hamburguesa
+  const centerY = layers.length > 0 
+    ? layers.reduce((sum, layer) => sum + layer.yOffset, 0) / layers.length 
+    : 0;
+
   return (
     <View style={[styles.container, { width: size, height: size }]}>
-      <Canvas>
-        <PerspectiveCamera makeDefault position={[0, 2, 6]} />
-        
-        <ambientLight intensity={Math.PI / 2} />
-        <spotLight 
-          position={[10, 10, 10]} 
-          angle={0.15} 
-          penumbra={1} 
-          decay={0} 
-          intensity={Math.PI} 
+      <Canvas
+        camera={{
+          position: [4, 3, 4],
+          fov: 45,
+          near: 0.1,
+          far: 1000,
+        }}
+        onCreated={({ camera }) => {
+          camera.lookAt(0, centerY, 0); // Mirar al centro de la hamburguesa
+        }}
+      >
+        <ambientLight intensity={0.6} />
+        <directionalLight 
+          position={[5, 8, 5]} 
+          intensity={1.5}
+          castShadow
+        />
+        <directionalLight 
+          position={[-5, 5, -5]} 
+          intensity={0.5}
         />
         <pointLight 
-          position={[-10, -10, -10]} 
-          decay={0} 
-          intensity={Math.PI} 
+          position={[0, 6, 0]} 
+          intensity={0.6}
         />
         
-        <group>
-          {layers.map((layer, index) => (
-            <LayerModel3D
-              key={index}
-              modelPath={layer.modelPath}
-              position={[0, layer.yOffset, 0]}
-              scale={1.8}
-            />
-          ))}
-        </group>
+        <RotatingBurger layers={layers} />
         
         <Environment preset="sunset" />
       </Canvas>

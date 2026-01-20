@@ -1,38 +1,37 @@
 import BurgerViewerScreen from '@/components/organisms/BurgerViewerScreen';
 import React, { useState } from 'react';
 
-// Definir las capas de la hamburguesa
-// IMPORTANTE: usar rutas relativas con require()
+// Ajustar los offsets Y para mejor proporción
 const BURGER_LAYERS = [
   { 
     name: 'Pan Superior', 
     modelPath: require('../assets/models/panSuperior.glb'),
-    yOffset: 1.5
+    yOffset: 2.5  // Ajustado
   },
   { 
     name: 'Queso', 
     modelPath: require('../assets/models/queso.glb'),
-    yOffset: 1.2
+    yOffset: 2.0  // Ajustado
   },
   { 
     name: 'Lechuga', 
     modelPath: require('../assets/models/lechuga.glb'),
-    yOffset: 0.9
+    yOffset: 1.5  // Ajustado
   },
   { 
     name: 'Tomate', 
     modelPath: require('../assets/models/tomate.glb'),
-    yOffset: 0.6
+    yOffset: 1.0  // Ajustado
   },
   { 
     name: 'Carne', 
     modelPath: require('../assets/models/carne.glb'),
-    yOffset: 0.3
+    yOffset: 0.5  // Ajustado
   },
   { 
     name: 'Pan Inferior', 
     modelPath: require('../assets/models/panInferior.glb'),
-    yOffset: 0
+    yOffset: 0    // Base
   },
 ];
 

@@ -1,35 +1,62 @@
-import LayerModel3D from '@/components/atoms/LayerModel3D';
-import { Environment, PerspectiveCamera } from '@react-three/drei/native';
-import { Canvas } from '@react-three/fiber/native';
-import React from 'react';
+import { Environment } from '@react-three/drei/native';
+import { Canvas, useFrame } from '@react-three/fiber/native';
+import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Group } from 'three';
+import LayerModel3D from '../atoms/LayerModel3D';
 
 interface LayerView3DProps {
   modelPath: any;
   size?: number;
 }
 
+// Componente para rotar suavemente el ingrediente
+function RotatingLayer({ modelPath }: { modelPath: any }) {
+  const groupRef = useRef<Group>(null);
+
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.3;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      <LayerModel3D modelPath={modelPath} position={[0, 0, 0]} scale={1.5} />
+    </group>
+  );
+}
+
 const LayerView3D = ({ modelPath, size = 300 }: LayerView3DProps) => {
   return (
     <View style={[styles.container, { width: size, height: size }]}>
-      <Canvas>
-        <PerspectiveCamera makeDefault position={[0, 0, 5]} />
-        
-        <ambientLight intensity={Math.PI / 2} />
-        <spotLight 
-          position={[10, 10, 10]} 
-          angle={0.15} 
-          penumbra={1} 
-          decay={0} 
-          intensity={Math.PI} 
+      <Canvas
+        camera={{
+          position: [3, 2.5, 3],
+          fov: 50,
+          near: 0.1,
+          far: 1000,
+        }}
+        onCreated={({ camera }) => {
+          camera.lookAt(0, 0, 0); // Mirar al centro (0, 0, 0)
+        }}
+      >
+        <ambientLight intensity={0.6} />
+        <directionalLight 
+          position={[5, 5, 5]} 
+          intensity={1.2}
+          castShadow
+        />
+        <directionalLight 
+          position={[-5, 3, -5]} 
+          intensity={0.4}
         />
         <pointLight 
-          position={[-10, -10, -10]} 
-          decay={0} 
-          intensity={Math.PI} 
+          position={[0, 5, 0]} 
+          intensity={0.5}
         />
         
-        <LayerModel3D modelPath={modelPath} position={[0, 0, 0]} scale={2} />
+        <RotatingLayer modelPath={modelPath} />
         
         <Environment preset="sunset" />
       </Canvas>
