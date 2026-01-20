@@ -1,5 +1,27 @@
 import { Stack } from "expo-router";
+import { StatusBar } from 'expo-status-bar';
 
 export default function RootLayout() {
-  return <Stack />;
+  return (
+    <>
+      <StatusBar style="light" />
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: '#1a1a2e' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: 'bold' },
+          contentStyle: { backgroundColor: '#1a1a2e' },
+        }}
+      >
+        <Stack.Screen 
+          name="index" 
+          options={{ title: 'Inicio', headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="burger-viewer" 
+          options={{ title: 'Burger Viewer', headerShown: false }} 
+        />
+      </Stack>
+    </>
+  );
 }
