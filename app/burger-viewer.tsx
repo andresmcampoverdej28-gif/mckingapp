@@ -2,35 +2,36 @@ import BurgerViewerScreen from '@/components/organisms/BurgerViewerScreen';
 import React, { useState } from 'react';
 
 // Definir las capas de la hamburguesa
+// IMPORTANTE: usar rutas relativas con require()
 const BURGER_LAYERS = [
   { 
     name: 'Pan Superior', 
-    modelPath: require('@/assets/models/panSuperior.glb'),
+    modelPath: require('../assets/models/panSuperior.glb'),
     yOffset: 1.5
   },
   { 
     name: 'Queso', 
-    modelPath: require('@/assets/models/queso.glb'),
+    modelPath: require('../assets/models/queso.glb'),
     yOffset: 1.2
   },
   { 
     name: 'Lechuga', 
-    modelPath: require('@/assets/models/lechuga.glb'),
+    modelPath: require('../assets/models/lechuga.glb'),
     yOffset: 0.9
   },
   { 
     name: 'Tomate', 
-    modelPath: require('@/assets/models/tomate.glb'),
+    modelPath: require('../assets/models/tomate.glb'),
     yOffset: 0.6
   },
   { 
     name: 'Carne', 
-    modelPath: require('@/assets/models/carne.glb'),
+    modelPath: require('../assets/models/carne.glb'),
     yOffset: 0.3
   },
   { 
     name: 'Pan Inferior', 
-    modelPath: require('@/assets/models/panInferior.glb'),
+    modelPath: require('../assets/models/panInferior.glb'),
     yOffset: 0
   },
 ];
