@@ -1,9 +1,10 @@
 import { useGLTF } from '@react-three/drei/native';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { Box3, Group, Vector3 } from 'three';
 import type { GLTF } from 'three-stdlib';
 
 interface LayerModel3DProps {
-  modelPath: any;
+  modelUrl: string; // Ahora recibe URL en vez de require()
   position?: [number, number, number];
   scale?: number;
 }
@@ -14,15 +15,27 @@ type GLTFResult = GLTF & {
 };
 
 const LayerModel3D = ({ 
-  modelPath, 
+  modelUrl, 
   position = [0, 0, 0],
-  scale = 1 
+  scale = 1.5 
 }: LayerModel3DProps) => {
-  const gltf = useGLTF(modelPath) as GLTFResult;
+  const groupRef = useRef<Group>(null);
+  const gltf = useGLTF(modelUrl) as GLTFResult;
+
+  useEffect(() => {
+    if (groupRef.current) {
+      const box = new Box3().setFromObject(groupRef.current);
+      const center = new Vector3();
+      box.getCenter(center);
+      groupRef.current.position.sub(center);
+    }
+  }, []);
 
   return (
     <group position={position} scale={scale}>
-      <primitive object={gltf.scene.clone()} />
+      <group ref={groupRef}>
+        <primitive object={gltf.scene.clone()} />
+      </group>
     </group>
   );
 };

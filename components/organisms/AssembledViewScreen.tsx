@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import AssembledBurger3D from '@/components/molecules/AssembledBurger3D';
+import { StyleSheet, Text, View } from 'react-native';
+import AssembledBurger3D from '../molecules/AssembledBurger3D';
 
 interface Layer {
   name: string;
-  modelPath: any;
+  modelUrl: string; // Cambio aquí
   yOffset: number;
 }
 

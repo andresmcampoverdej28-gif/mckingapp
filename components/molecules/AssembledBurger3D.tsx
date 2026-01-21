@@ -6,7 +6,7 @@ import { Group } from 'three';
 import LayerModel3D from '../atoms/LayerModel3D';
 
 interface Layer {
-  modelPath: any;
+  modelUrl: string;
   yOffset: number;
 }
 
@@ -29,9 +29,9 @@ function RotatingBurger({ layers }: { layers: Layer[] }) {
       {layers.map((layer, index) => (
         <LayerModel3D
           key={index}
-          modelPath={layer.modelPath}
+          modelUrl={layer.modelUrl}
           position={[0, layer.yOffset, 0]}
-          scale={1}
+          scale={1.25}
         />
       ))}
     </group>
@@ -39,7 +39,6 @@ function RotatingBurger({ layers }: { layers: Layer[] }) {
 }
 
 const AssembledBurger3D = ({ layers, size = 350 }: AssembledBurger3DProps) => {
-  // Calcular el centro Y de la hamburguesa
   const centerY = layers.length > 0 
     ? layers.reduce((sum, layer) => sum + layer.yOffset, 0) / layers.length 
     : 0;
@@ -54,7 +53,7 @@ const AssembledBurger3D = ({ layers, size = 350 }: AssembledBurger3DProps) => {
           far: 1000,
         }}
         onCreated={({ camera }) => {
-          camera.lookAt(0, centerY, 0); // Mirar al centro de la hamburguesa
+          camera.lookAt(0, centerY, 0);
         }}
       >
         <ambientLight intensity={0.6} />

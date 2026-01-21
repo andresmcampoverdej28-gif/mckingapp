@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import LayerView3D from '@/components/molecules/LayerView3D';
-import LayerInfo from '@/components/atoms/LayerInfo';
-import LayerNavigator from '@/components/molecules/LayerNavigator';
+import { StyleSheet, View } from 'react-native';
+import LayerInfo from '../atoms/LayerInfo';
+import LayerNavigator from '../molecules/LayerNavigator';
+import LayerView3D from '../molecules/LayerView3D';
 
 interface Layer {
   name: string;
-  modelPath: any;
+  modelUrl: string;
 }
 
 interface LayerViewScreenProps {
@@ -36,7 +36,7 @@ const LayerViewScreen = ({
 
   return (
     <View style={styles.container}>
-      <LayerView3D modelPath={currentLayer.modelPath} size={320} />
+      <LayerView3D modelUrl={currentLayer.modelUrl} size={320} />
       
       <View style={styles.info}>
         <LayerInfo name={currentLayer.name} />

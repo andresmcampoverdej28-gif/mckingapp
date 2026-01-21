@@ -6,12 +6,11 @@ import { Group } from 'three';
 import LayerModel3D from '../atoms/LayerModel3D';
 
 interface LayerView3DProps {
-  modelPath: any;
+  modelUrl: string; // Cambio aquí
   size?: number;
 }
 
-// Componente para rotar suavemente el ingrediente
-function RotatingLayer({ modelPath }: { modelPath: any }) {
+function RotatingLayer({ modelUrl }: { modelUrl: string }) {
   const groupRef = useRef<Group>(null);
 
   useFrame((state, delta) => {
@@ -22,12 +21,12 @@ function RotatingLayer({ modelPath }: { modelPath: any }) {
 
   return (
     <group ref={groupRef}>
-      <LayerModel3D modelPath={modelPath} position={[0, 0, 0]} scale={1.5} />
+      <LayerModel3D modelUrl={modelUrl} position={[0, 0, 0]} scale={1.25} />
     </group>
   );
 }
 
-const LayerView3D = ({ modelPath, size = 300 }: LayerView3DProps) => {
+const LayerView3D = ({ modelUrl, size = 300 }: LayerView3DProps) => {
   return (
     <View style={[styles.container, { width: size, height: size }]}>
       <Canvas
@@ -38,7 +37,7 @@ const LayerView3D = ({ modelPath, size = 300 }: LayerView3DProps) => {
           far: 1000,
         }}
         onCreated={({ camera }) => {
-          camera.lookAt(0, 0, 0); // Mirar al centro (0, 0, 0)
+          camera.lookAt(0, 0, 0);
         }}
       >
         <ambientLight intensity={0.6} />
@@ -56,7 +55,7 @@ const LayerView3D = ({ modelPath, size = 300 }: LayerView3DProps) => {
           intensity={0.5}
         />
         
-        <RotatingLayer modelPath={modelPath} />
+        <RotatingLayer modelUrl={modelUrl} />
         
         <Environment preset="sunset" />
       </Canvas>
