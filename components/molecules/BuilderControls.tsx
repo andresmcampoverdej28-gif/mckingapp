@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Undo2, Trash2 } from 'lucide-react-native';
 
 interface BuilderControlsProps {
   onUndo: () => void;
@@ -17,7 +18,7 @@ const BuilderControls = ({ onUndo, onClear, canUndo }: BuilderControlsProps) => 
         android_ripple={{ color: 'rgba(255,255,255,0.2)' }}
       >
         <View style={styles.buttonContent}>
-          <Text style={styles.icon}>↩️</Text>
+          <Undo2 color="#fff" size={22} />
           <Text style={styles.buttonText}>Quitar último</Text>
         </View>
       </Pressable>
@@ -28,7 +29,7 @@ const BuilderControls = ({ onUndo, onClear, canUndo }: BuilderControlsProps) => 
         android_ripple={{ color: 'rgba(255,255,255,0.2)' }}
       >
         <View style={styles.buttonContent}>
-          <Text style={styles.icon}>🗑️</Text>
+          <Trash2 color="#fff" size={22} />
           <Text style={styles.buttonText}>Reiniciar</Text>
         </View>
       </Pressable>
@@ -64,9 +65,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 12,
     paddingVertical: 16,
-  },
-  icon: {
-    fontSize: 22,
   },
   buttonText: {
     color: '#fff',

@@ -1,3 +1,4 @@
+import { Apple, Beef, LeafyGreen, LucideIcon, Rat } from 'lucide-react-native';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import IngredientButton from '../atoms/IngredientButton';
@@ -5,7 +6,7 @@ import IngredientButton from '../atoms/IngredientButton';
 interface Ingredient {
   key: string;
   name: string;
-  emoji: string;
+  icon: LucideIcon;
   color: string;
 }
 
@@ -14,10 +15,10 @@ interface IngredientSelectorProps {
 }
 
 const AVAILABLE_INGREDIENTS: Ingredient[] = [
-  { key: 'carne', name: 'Carne', emoji: '🥩', color: '#8b4513' },
-  { key: 'queso', name: 'Queso', emoji: '🧀', color: '#ffd700' },
-  { key: 'lechuga', name: 'Lechuga', emoji: '🥬', color: '#32cd32' },
-  { key: 'tomate', name: 'Tomate', emoji: '🍅', color: '#ff6347' },
+  { key: 'carne', name: 'Carne', icon: Beef, color: '#8b4513' },
+  { key: 'queso', name: 'Queso', icon: Rat, color: '#ffd700' },
+  { key: 'lechuga', name: 'Lechuga', icon: LeafyGreen, color: '#32cd32' },
+  { key: 'tomate', name: 'Tomate', icon: Apple, color: '#ff6347' },
 ];
 
 const IngredientSelector = ({ onSelectIngredient }: IngredientSelectorProps) => {
@@ -33,7 +34,7 @@ const IngredientSelector = ({ onSelectIngredient }: IngredientSelectorProps) => 
           <IngredientButton
             key={ingredient.key}
             name={ingredient.name}
-            emoji={ingredient.emoji}
+            icon={ingredient.icon}
             color={ingredient.color}
             onPress={() => onSelectIngredient(ingredient.key)}
           />

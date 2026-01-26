@@ -1,5 +1,6 @@
 import SceneLayout from '@/templates/SceneLayout';
 import { useRouter } from 'expo-router';
+import { Eye, Hamburger } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function Index() {
@@ -9,8 +10,8 @@ export default function Index() {
     <SceneLayout>
       <View style={styles.content}>
         <View style={styles.titleContainer}>
-          <Text style={styles.emoji}>🍔</Text>
-          <Text style={styles.title}>Burger Viewer</Text>
+          <Hamburger color="#f39c12" size={80} />
+          <Text style={styles.title}>Welcome to Kolossos'Burger</Text>
         </View>
         
         <Text style={styles.subtitle}>Visualiza una hamburguesa en 3D</Text>
@@ -19,7 +20,7 @@ export default function Index() {
           style={styles.button} 
           onPress={() => router.push('/burger-viewer' as any)}
         >
-          <Text style={styles.buttonEmoji}>👁️</Text>
+          <Eye color="#fff" size={32} />
           <Text style={styles.buttonText}>Ver Hamburguesa</Text>
         </Pressable>
       </View>
@@ -35,9 +36,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
     gap: 20,
-  },
-  emoji: {
-    fontSize: 80,
   },
   title: {
     fontSize: 48,
@@ -62,9 +60,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 8,
-  },
-  buttonEmoji: {
-    fontSize: 32,
   },
   buttonText: {
     fontSize: 24,

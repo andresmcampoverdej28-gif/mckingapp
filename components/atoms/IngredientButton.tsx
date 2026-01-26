@@ -1,22 +1,23 @@
+import { LucideIcon } from 'lucide-react-native';
 import React from 'react';
-import { Pressable, Text, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 
 interface IngredientButtonProps {
   name: string;
-  emoji: string;
+  icon: LucideIcon;
   onPress: () => void;
   color?: string;
 }
 
 const IngredientButton = ({ 
   name, 
-  emoji, 
+  icon: Icon,
   onPress,
   color = '#f39c12'
 }: IngredientButtonProps) => {
   return (
     <Pressable style={[styles.button, { backgroundColor: color }]} onPress={onPress}>
-      <Text style={styles.emoji}>{emoji}</Text>
+      <Icon color="#fff" size={32} style={styles.icon} />
       <Text style={styles.name}>{name}</Text>
     </Pressable>
   );
@@ -35,8 +36,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 3,
   },
-  emoji: {
-    fontSize: 32,
+  icon: {
     marginBottom: 4,
   },
   name: {
