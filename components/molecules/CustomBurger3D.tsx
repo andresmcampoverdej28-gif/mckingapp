@@ -1,6 +1,6 @@
 import { Environment } from '@react-three/drei/native';
-import { Canvas, useFrame } from '@react-three/fiber/native';
-import React, { useRef } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber/native';
+import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Group } from 'three';
 import InteractiveLayerModel from '../atoms/InteractiveLayerModel';
@@ -43,13 +43,46 @@ function RotatingBurger({
           key={layer.id}
           modelUrl={layer.modelUrl}
           position={[0, layer.yOffset, 0]}
-          scale={0.5}
+          scale={4.5}
           isSelected={selectedLayerId === layer.id}
           onSelect={() => onLayerSelect(layer.id)}
         />
       ))}
     </group>
   );
+}
+
+// Componente para ajustar dinámicamente la cámara
+function AdaptiveCamera({ layers }: { layers: BurgerLayer[] }) {
+  const { camera } = useThree();
+  
+  useEffect(() => {
+    if (layers.length > 0) {
+      // Calcular la altura máxima de la hamburguesa
+      const maxYOffset = Math.max(...layers.map(layer => layer.yOffset));
+      const minYOffset = Math.min(...layers.map(layer => layer.yOffset));
+      const burgerHeight = maxYOffset - minYOffset + 1.2; // +1.2 para margen
+      
+      // Calcular el centro vertical de la hamburguesa
+      const centerY = (maxYOffset + minYOffset) / 2;
+      
+      // Ajustar la distancia de la cámara basado en la altura
+      // Cuanto más alta la hamburguesa, más lejos se aleja la cámara
+      const baseDistance = 6;
+      const heightFactor = 1.5;
+      const distance = baseDistance + (burgerHeight * heightFactor);
+      
+      // Ajustar la altura de la cámara para mantener el centro en vista
+      const cameraHeight = centerY + distance * 0.3;
+      
+      // Actualizar posición de la cámara
+      camera.position.set(distance, cameraHeight, distance);
+      camera.lookAt(0, centerY, 0);
+      camera.updateProjectionMatrix();
+    }
+  }, [layers, camera]);
+
+  return null; // Este componente no renderiza nada
 }
 
 const CustomBurger3D = ({ 
@@ -59,24 +92,20 @@ const CustomBurger3D = ({
   size = 320 
 }: CustomBurger3DProps) => {
   const selectedLayer = layers.find(l => l.id === selectedLayerId);
-  const centerY = layers.length > 0 
-    ? layers.reduce((sum, layer) => sum + layer.yOffset, 0) / layers.length 
-    : 0;
 
   return (
     <View style={styles.container}>
       <View style={[styles.canvas, { width: size, height: size }]}>
         <Canvas
           camera={{
-            position: [4, 3, 4],
+            position: [6, 3, 6],
             fov: 45,
             near: 0.1,
             far: 1000,
           }}
-          onCreated={({ camera }) => {
-            camera.lookAt(0, centerY, 0);
-          }}
         >
+          <AdaptiveCamera layers={layers} />
+          
           <ambientLight intensity={0.6} />
           <directionalLight 
             position={[5, 8, 5]} 

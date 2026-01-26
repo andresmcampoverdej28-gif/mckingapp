@@ -14,17 +14,23 @@ const BuilderControls = ({ onUndo, onClear, canUndo }: BuilderControlsProps) => 
         style={[styles.button, !canUndo && styles.buttonDisabled]}
         onPress={onUndo}
         disabled={!canUndo}
+        android_ripple={{ color: 'rgba(255,255,255,0.2)' }}
       >
-        <Text style={styles.icon}>↩️</Text>
-        <Text style={styles.buttonText}>Quitar último</Text>
+        <View style={styles.buttonContent}>
+          <Text style={styles.icon}>↩️</Text>
+          <Text style={styles.buttonText}>Quitar último</Text>
+        </View>
       </Pressable>
 
       <Pressable 
         style={[styles.button, styles.clearButton]}
         onPress={onClear}
+        android_ripple={{ color: 'rgba(255,255,255,0.2)' }}
       >
-        <Text style={styles.icon}>🗑️</Text>
-        <Text style={styles.buttonText}>Reiniciar</Text>
+        <View style={styles.buttonContent}>
+          <Text style={styles.icon}>🗑️</Text>
+          <Text style={styles.buttonText}>Reiniciar</Text>
+        </View>
       </Pressable>
     </View>
   );
@@ -33,33 +39,38 @@ const BuilderControls = ({ onUndo, onClear, canUndo }: BuilderControlsProps) => 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    gap: 15,
-    paddingHorizontal: 20,
+    gap: 16,
+    width: '100%',
+    justifyContent: 'space-between',
   },
   button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: '#3498db',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 10,
     flex: 1,
+    backgroundColor: '#3498db',
+    borderRadius: 12,
+    overflow: 'hidden',
+    minHeight: 56,
     justifyContent: 'center',
   },
   clearButton: {
     backgroundColor: '#e74c3c',
   },
   buttonDisabled: {
-    backgroundColor: '#95a5a6',
-    opacity: 0.5,
+    backgroundColor: '#7f8c8d',
+    opacity: 0.7,
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    paddingVertical: 16,
   },
   icon: {
-    fontSize: 20,
+    fontSize: 22,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
   },
 });

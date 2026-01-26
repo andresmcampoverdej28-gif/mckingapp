@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import BurgerViewerScreen from '@/components/organisms/BurgerViewerScreen';
 import { burgerModels } from '@/lib/config/burgerModels';
+import React, { useState } from 'react';
 
 const LAYER_SPACING = 0.6;
 
