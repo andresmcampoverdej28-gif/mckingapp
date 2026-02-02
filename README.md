@@ -20,25 +20,6 @@ Una aplicación interactiva en React Native con Expo para visualizar y crear ham
 
 ---
 
-## 🚀 Instalación
-```bash
-# Clonar e instalar
-git clone <tu-repositorio>
-cd burger-viewer
-npm install
-
-# Dependencias 3D
-npx expo install three @react-three/fiber @react-three/drei expo-gl
-
-# Iconos
-npm install lucide-react-native
-
-# Iniciar
-npx expo start
-```
-
----
-
 ## 📁 Estructura del Proyecto
 ```
 ├── app/                      # Rutas y lógica (Expo Router)
