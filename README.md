@@ -1,53 +1,120 @@
-> Edited for use in IDX on 07/09/12
+# 🍔 Burger Viewer 3D
 
-# Welcome to your Expo app 👋
+Una aplicación interactiva en React Native con Expo para visualizar y crear hamburguesas en 3D.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## ✨ Características
 
-## Get started
+- **Vista por Capas**: Navega entre ingredientes individuales
+- **Vista Ensamblada**: Visualiza la hamburguesa completa
+- **Constructor Personalizado**: Arma tu propia hamburguesa
+- **Modelos 3D Interactivos**: Rotación automática y selección táctil
 
-#### Android
+---
 
-Android previews are defined as a `workspace.onStart` hook and started as a vscode task when the workspace is opened/started.
+## 🛠️ Tecnologías
 
-Note, if you can't find the task, either:
-- Rebuild the environment (using command palette: `IDX: Rebuild Environment`), or
-- Run `npm run android -- --tunnel` command manually run android and see the output in your terminal. The device should pick up this new command and switch to start displaying the output from it.
+- **React Native** + **Expo** + **TypeScript**
+- **Three.js** (`@react-three/fiber`, `@react-three/drei`) - Renderizado 3D
+- **Lucide React Native** - Iconos
+- **Expo Router** - Navegación basada en archivos
 
-In the output of this command/task, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You'll also find options to open the app's developer menu, reload the app, and more.
-
-#### Web
-
-Web previews will be started and managred automatically. Use the toolbar to manually refresh.
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+## 🚀 Instalación
 ```bash
-npm run reset-project
+# Clonar e instalar
+git clone <tu-repositorio>
+cd burger-viewer
+npm install
+
+# Dependencias 3D
+npx expo install three @react-three/fiber @react-three/drei expo-gl
+
+# Iconos
+npm install lucide-react-native
+
+# Iniciar
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 📁 Estructura del Proyecto
+```
+├── app/                      # Rutas y lógica (Expo Router)
+│   ├── index.tsx            # Pantalla de inicio
+│   └── burger-viewer.tsx    # Pantalla principal
+│
+├── assets/models/           # Modelos .glb
+│
+├── components/              # UI (Atomic Design)
+│   ├── atoms/              # Componentes básicos
+│   ├── molecules/          # Combinaciones de átomos
+│   ├── organisms/          # Secciones completas
+│   └── templates/          # Layouts reutilizables
+│
+└── lib/config/             # Configuración de modelos 3D
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 💡 Conceptos Clave
 
-## Join the community
+### **Carga de Modelos 3D**
+```tsx
+// Importar (no usar require)
+import model from '../../assets/models/carne.glb';
 
-Join our community of developers creating universal apps.
+// Renderizar
+<Gltf src={model} position={[0, 0, 0]} scale={2.5} />
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### **Array Inteligente (Constructor)**
+- **Índice 0**: Pan inferior (fijo)
+- **Índice final**: Pan superior (se actualiza automáticamente)
+- **Intermedios**: Ingredientes agregados dinámicamente
+
+### **Rotación Automática**
+```tsx
+useFrame((state, delta) => {
+  groupRef.current.rotation.y += delta * 0.3;
+});
+```
+
+### **Interactividad**
+```tsx
+<Gltf 
+  scale={isSelected ? 2.8 : 2.2}
+  onClick={() => setSelected(id)}
+/>
+```
+
+---
+
+## 🎨 Desarrollo
+
+### Agregar ingrediente
+1. Colocar modelo en `assets/models/`
+2. Importar en `lib/config/burgerModels.ts`
+3. Agregar a `AVAILABLE_INGREDIENTS` e `INGREDIENT_MAP`
+
+### Ajustar espaciado
+```tsx
+const LAYER_SPACING = 0.6; // Cambiar valor
+```
+
+---
+
+## 📚 Recursos
+
+- [Expo Docs](https://docs.expo.dev/)
+- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber)
+- [Lucide Icons](https://lucide.dev/icons/)
+
+---
+
+**Nota**: Aplicar transformaciones en Blender antes de exportar (`Object → Apply → All Transforms`)
+
+---
+
+**Creado con ❤️ usando Expo + Three.js**
