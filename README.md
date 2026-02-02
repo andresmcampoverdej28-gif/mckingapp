@@ -98,4 +98,4 @@ const LAYER_SPACING = 0.6; // Cambiar valor
 
 ---
 
-**Creado con ❤️ usando Expo + Three.js**
+**⚠️AVISO⚠️: ESTA APLICACIÓN ESTA TOTALMENTE SEPARA DE DICEAPP, DEBIDO A QUE DICHA APP SUFRIO UN ERROR POR IONICONS**
