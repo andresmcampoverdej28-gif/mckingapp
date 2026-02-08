@@ -1,44 +1,19 @@
 import BurgerViewerScreen from '@/components/organisms/BurgerViewerScreen';
 import { burgerModels } from '@/lib/config/burgerModels';
 import React, { useState } from 'react';
+import { Alert } from 'react-native';
 
 const LAYER_SPACING = 0.6;
 
-// Capas predefinidas
 const BURGER_LAYERS = [
-  { 
-    name: 'Pan Inferior', 
-    modelUrl: burgerModels.panInferior,
-    yOffset: 0
-  },
-  { 
-    name: 'Carne', 
-    modelUrl: burgerModels.carne,
-    yOffset: LAYER_SPACING
-  },
-  { 
-    name: 'Tomate', 
-    modelUrl: burgerModels.tomate,
-    yOffset: LAYER_SPACING * 2
-  },
-  { 
-    name: 'Lechuga', 
-    modelUrl: burgerModels.lechuga,
-    yOffset: LAYER_SPACING * 3
-  },
-  { 
-    name: 'Queso', 
-    modelUrl: burgerModels.queso,
-    yOffset: LAYER_SPACING * 4
-  },
-  { 
-    name: 'Pan Superior', 
-    modelUrl: burgerModels.panSuperior,
-    yOffset: LAYER_SPACING * 5
-  },
+  { name: 'Pan Inferior', modelUrl: burgerModels.panInferior, yOffset: 0 },
+  { name: 'Carne', modelUrl: burgerModels.carne, yOffset: LAYER_SPACING },
+  { name: 'Tomate', modelUrl: burgerModels.tomate, yOffset: LAYER_SPACING * 2 },
+  { name: 'Lechuga', modelUrl: burgerModels.lechuga, yOffset: LAYER_SPACING * 3 },
+  { name: 'Queso', modelUrl: burgerModels.queso, yOffset: LAYER_SPACING * 4 },
+  { name: 'Pan Superior', modelUrl: burgerModels.panSuperior, yOffset: LAYER_SPACING * 5 },
 ];
 
-// Mapa de ingredientes disponibles
 const INGREDIENT_MAP: Record<string, { name: string; modelUrl: string }> = {
   carne: { name: 'Carne', modelUrl: burgerModels.carne },
   queso: { name: 'Queso', modelUrl: burgerModels.queso },
@@ -51,20 +26,9 @@ export default function BurgerViewer() {
   const [currentLayerIndex, setCurrentLayerIndex] = useState(0);
   const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
   
-  // Estado para hamburguesa personalizada
   const [customLayers, setCustomLayers] = useState([
-    { 
-      id: 'bottom-bread', 
-      name: 'Pan Inferior', 
-      modelUrl: burgerModels.panInferior, 
-      yOffset: 0 
-    },
-    { 
-      id: 'top-bread', 
-      name: 'Pan Superior', 
-      modelUrl: burgerModels.panSuperior, 
-      yOffset: LAYER_SPACING 
-    },
+    { id: 'bottom-bread', name: 'Pan Inferior', modelUrl: burgerModels.panInferior, yOffset: 0 },
+    { id: 'top-bread', name: 'Pan Superior', modelUrl: burgerModels.panSuperior, yOffset: LAYER_SPACING },
   ]);
 
   const handleTabChange = (tab: 'layers' | 'assembled' | 'custom') => {
@@ -81,7 +45,6 @@ export default function BurgerViewer() {
     if (!ingredient) return;
 
     setCustomLayers(prev => {
-      // Insertar antes del pan superior
       const newLayers = [...prev];
       const topBreadIndex = newLayers.length - 1;
       
@@ -92,10 +55,7 @@ export default function BurgerViewer() {
         yOffset: newLayers[topBreadIndex - 1]?.yOffset + LAYER_SPACING || LAYER_SPACING,
       };
 
-      // Insertar el nuevo ingrediente antes del pan superior
       newLayers.splice(topBreadIndex, 0, newLayer);
-
-      // Actualizar la posición del pan superior
       newLayers[newLayers.length - 1].yOffset = newLayer.yOffset + LAYER_SPACING;
 
       return newLayers;
@@ -104,13 +64,11 @@ export default function BurgerViewer() {
 
   const handleRemoveLast = () => {
     setCustomLayers(prev => {
-      if (prev.length <= 2) return prev; // No quitar los panes
+      if (prev.length <= 2) return prev;
       
       const newLayers = [...prev];
-      // Quitar el penúltimo (antes del pan superior)
       newLayers.splice(newLayers.length - 2, 1);
       
-      // Actualizar posición del pan superior
       const lastIngredientIndex = newLayers.length - 2;
       newLayers[newLayers.length - 1].yOffset = 
         lastIngredientIndex >= 0 
@@ -124,24 +82,48 @@ export default function BurgerViewer() {
 
   const handleClearCustom = () => {
     setCustomLayers([
-      { 
-        id: 'bottom-bread', 
-        name: 'Pan Inferior', 
-        modelUrl: burgerModels.panInferior, 
-        yOffset: 0 
-      },
-      { 
-        id: 'top-bread', 
-        name: 'Pan Superior', 
-        modelUrl: burgerModels.panSuperior, 
-        yOffset: LAYER_SPACING 
-      },
+      { id: 'bottom-bread', name: 'Pan Inferior', modelUrl: burgerModels.panInferior, yOffset: 0 },
+      { id: 'top-bread', name: 'Pan Superior', modelUrl: burgerModels.panSuperior, yOffset: LAYER_SPACING },
     ]);
     setSelectedLayerId(null);
   };
 
   const handleLayerSelect = (id: string) => {
     setSelectedLayerId(prevId => prevId === id ? null : id);
+  };
+
+  // ← NUEVA FUNCIÓN
+  const handlePurchase = () => {
+    const ingredientCount = customLayers.length - 2;
+    
+    if (ingredientCount === 0) {
+      Alert.alert(
+        'Hamburguesa vacía',
+        'Agrega al menos un ingrediente antes de comprar',
+        [{ text: 'OK' }]
+      );
+      return;
+    }
+
+    const ingredientsList = customLayers
+      .slice(1, -1) // Excluir panes
+      .map(layer => layer.name)
+      .join(', ');
+
+    Alert.alert(
+      '🛒 Comprar Hamburguesa',
+      `Tu hamburguesa tiene:\n\n${ingredientsList}\n\nTotal: ${ingredientCount} ingredientes`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { 
+          text: 'Confirmar', 
+          onPress: () => {
+            // Aquí irá la lógica futura
+            Alert.alert('✅ Compra exitosa', '¡Disfruta tu hamburguesa!');
+          }
+        }
+      ]
+    );
   };
 
   return (
@@ -157,6 +139,7 @@ export default function BurgerViewer() {
       onRemoveLast={handleRemoveLast}
       onClearCustom={handleClearCustom}
       onLayerSelect={handleLayerSelect}
+      onPurchase={handlePurchase} // ← NUEVO
     />
   );
 }

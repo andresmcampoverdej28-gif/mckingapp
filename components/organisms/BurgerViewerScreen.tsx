@@ -32,6 +32,7 @@ interface BurgerViewerScreenProps {
   onRemoveLast: () => void;
   onClearCustom: () => void;
   onLayerSelect: (id: string) => void;
+  onPurchase: () => void; // ← NUEVO
 }
 
 const BurgerViewerScreen = ({
@@ -46,11 +47,12 @@ const BurgerViewerScreen = ({
   onRemoveLast,
   onClearCustom,
   onLayerSelect,
+  onPurchase, // ← NUEVO
 }: BurgerViewerScreenProps) => {
   return (
     <SceneLayout>
       <View style={styles.content}>
-        <AppTitle text="Kolossos' Burger"/>
+        <AppTitle text="Mi Hamburguesa"/>
         
         <TabSelector activeTab={activeTab} onTabChange={onTabChange} />
         
@@ -75,6 +77,7 @@ const BurgerViewerScreen = ({
               onRemoveLast={onRemoveLast}
               onClear={onClearCustom}
               onLayerSelect={onLayerSelect}
+              onPurchase={onPurchase} // ← NUEVO
             />
           )}
         </View>
