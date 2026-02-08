@@ -14,14 +14,14 @@ export default function Index() {
           <Text style={styles.title}>Welcome to Kolossos'Burger</Text>
         </View>
         
-        <Text style={styles.subtitle}>Visualiza una hamburguesa en 3D</Text>
+        <Text style={styles.subtitle}>Unas Hamburguesas Asesinas!</Text>
         
         <Pressable 
           style={styles.button} 
           onPress={() => router.push('/burger-viewer' as any)}
         >
           <Eye color="#fff" size={32} />
-          <Text style={styles.buttonText}>Ver Hamburguesa</Text>
+          <Text style={styles.buttonText}>Ver Hamburguesas</Text>
         </Pressable>
       </View>
     </SceneLayout>

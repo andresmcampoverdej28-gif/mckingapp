@@ -52,7 +52,7 @@ const BurgerViewerScreen = ({
   return (
     <SceneLayout>
       <View style={styles.content}>
-        <AppTitle text="Mi Hamburguesa"/>
+        <AppTitle text="Kolossos' Burger"/>
         
         <TabSelector activeTab={activeTab} onTabChange={onTabChange} />
         

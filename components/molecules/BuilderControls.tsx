@@ -12,10 +12,10 @@ const BuilderControls = ({ onUndo, onClear, canUndo }: BuilderControlsProps) => 
   return (
     <View style={styles.container}>
       <Pressable 
-        style={[styles.button, !canUndo && styles.buttonDisabled]}
+        style={[styles.button, styles.undoButton, !canUndo && styles.buttonDisabled]}
         onPress={onUndo}
         disabled={!canUndo}
-        android_ripple={{ color: 'rgba(255,255,255,0.2)' }}
+        android_ripple={{ color: 'rgba(255,255,255,0.3)' }}
       >
         <View style={styles.buttonContent}>
           <Undo2 color="#fff" size={22} />
@@ -26,7 +26,7 @@ const BuilderControls = ({ onUndo, onClear, canUndo }: BuilderControlsProps) => 
       <Pressable 
         style={[styles.button, styles.clearButton]}
         onPress={onClear}
-        android_ripple={{ color: 'rgba(255,255,255,0.2)' }}
+        android_ripple={{ color: 'rgba(255,255,255,0.3)' }}
       >
         <View style={styles.buttonContent}>
           <Trash2 color="#fff" size={22} />
@@ -46,17 +46,19 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    backgroundColor: '#3498db',
     borderRadius: 12,
     overflow: 'hidden',
     minHeight: 56,
     justifyContent: 'center',
   },
+  undoButton: {
+    backgroundColor: '#3B82F6', // Azul vibrante
+  },
   clearButton: {
-    backgroundColor: '#e74c3c',
+    backgroundColor: '#EF4444', // Rojo vibrante
   },
   buttonDisabled: {
-    backgroundColor: '#7f8c8d',
+    backgroundColor: '#9CA3AF', // Gris para deshabilitado
     opacity: 0.7,
   },
   buttonContent: {

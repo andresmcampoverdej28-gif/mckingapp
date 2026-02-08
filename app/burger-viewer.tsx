@@ -1,7 +1,7 @@
+import CustomAlert from '@/components/molecules/CustomAlert';
 import BurgerViewerScreen from '@/components/organisms/BurgerViewerScreen';
 import { burgerModels } from '@/lib/config/burgerModels';
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
 
 const LAYER_SPACING = 0.6;
 
@@ -25,6 +25,22 @@ export default function BurgerViewer() {
   const [activeTab, setActiveTab] = useState<'layers' | 'assembled' | 'custom'>('layers');
   const [currentLayerIndex, setCurrentLayerIndex] = useState(0);
   const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
+  
+  // CORREGIDO: Incluimos todos los tipos que CustomAlert acepta
+  const [alertConfig, setAlertConfig] = useState<{
+    type: 'success' | 'error' | 'warning' | 'info' | 'purchase';
+    title: string;
+    message: string;
+    confirmText?: string;
+    cancelText?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+  }>({
+    type: 'info', // Ahora 'info' está incluido en los tipos permitidos
+    title: '',
+    message: '',
+  });
   
   const [customLayers, setCustomLayers] = useState([
     { id: 'bottom-bread', name: 'Pan Inferior', modelUrl: burgerModels.panInferior, yOffset: 0 },
@@ -92,54 +108,90 @@ export default function BurgerViewer() {
     setSelectedLayerId(prevId => prevId === id ? null : id);
   };
 
-  // ← NUEVA FUNCIÓN
   const handlePurchase = () => {
     const ingredientCount = customLayers.length - 2;
     
     if (ingredientCount === 0) {
-      Alert.alert(
-        'Hamburguesa vacía',
-        'Agrega al menos un ingrediente antes de comprar',
-        [{ text: 'OK' }]
-      );
+      setAlertConfig({
+        type: 'warning',
+        title: '🍔 Hamburguesa vacía',
+        message: '¡Necesitas agregar al menos un ingrediente antes de comprar!',
+        confirmText: 'Agregar ingredientes',
+        onConfirm: () => {
+          setShowAlert(false);
+          setActiveTab('custom');
+        },
+      });
+      setShowAlert(true);
       return;
     }
 
     const ingredientsList = customLayers
-      .slice(1, -1) // Excluir panes
-      .map(layer => layer.name)
-      .join(', ');
+      .slice(1, -1)
+      .map(layer => `• ${layer.name}`)
+      .join('\n');
 
-    Alert.alert(
-      '🛒 Comprar Hamburguesa',
-      `Tu hamburguesa tiene:\n\n${ingredientsList}\n\nTotal: ${ingredientCount} ingredientes`,
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { 
-          text: 'Confirmar', 
-          onPress: () => {
-            // Aquí irá la lógica futura
-            Alert.alert('✅ Compra exitosa', '¡Disfruta tu hamburguesa!');
-          }
-        }
-      ]
-    );
+    const totalPrice = ingredientCount * 1.5; // Ejemplo: $1.5 por ingrediente
+
+    setAlertConfig({
+      type: 'purchase',
+      title: '🛒 Confirmar Compra',
+      message: `Tu hamburguesa personalizada:\n\n${ingredientsList}\n\n📊 Total: ${ingredientCount} ingredientes\n💰 Precio: $${totalPrice.toFixed(2)}`,
+      confirmText: 'Confirmar Compra',
+      cancelText: 'Seguir Editando',
+      onConfirm: () => {
+        setShowAlert(false);
+        
+        // Mostrar alerta de éxito después de un breve delay
+        setTimeout(() => {
+          setAlertConfig({
+            type: 'success',
+            title: '¡Compra Exitosa!',
+            message: 'Tu hamburguesa personalizada está en preparación.\n\n🎉 ¡Disfruta de tu creación!',
+            confirmText: 'Continuar',
+            onConfirm: () => {
+              setShowAlert(false);
+              handleClearCustom(); // Reinicia la hamburguesa
+            },
+          });
+          setShowAlert(true);
+        }, 300);
+      },
+      onCancel: () => {
+        setShowAlert(false);
+      },
+    });
+    setShowAlert(true);
   };
 
   return (
-    <BurgerViewerScreen
-      activeTab={activeTab}
-      currentLayerIndex={currentLayerIndex}
-      layers={BURGER_LAYERS}
-      customLayers={customLayers}
-      selectedLayerId={selectedLayerId}
-      onTabChange={handleTabChange}
-      onLayerNavigate={handleLayerNavigate}
-      onAddIngredient={handleAddIngredient}
-      onRemoveLast={handleRemoveLast}
-      onClearCustom={handleClearCustom}
-      onLayerSelect={handleLayerSelect}
-      onPurchase={handlePurchase} // ← NUEVO
-    />
+    <>
+      <BurgerViewerScreen
+        activeTab={activeTab}
+        currentLayerIndex={currentLayerIndex}
+        layers={BURGER_LAYERS}
+        customLayers={customLayers}
+        selectedLayerId={selectedLayerId}
+        onTabChange={handleTabChange}
+        onLayerNavigate={handleLayerNavigate}
+        onAddIngredient={handleAddIngredient}
+        onRemoveLast={handleRemoveLast}
+        onClearCustom={handleClearCustom}
+        onLayerSelect={handleLayerSelect}
+        onPurchase={handlePurchase}
+      />
+      
+      <CustomAlert
+        visible={showAlert}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        confirmText={alertConfig.confirmText}
+        cancelText={alertConfig.cancelText}
+        onConfirm={alertConfig.onConfirm}
+        onCancel={alertConfig.onCancel}
+        onClose={() => setShowAlert(false)}
+      />
+    </>
   );
 }

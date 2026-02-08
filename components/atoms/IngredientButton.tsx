@@ -16,8 +16,11 @@ const IngredientButton = ({
   color = '#f39c12'
 }: IngredientButtonProps) => {
   return (
-    <Pressable style={[styles.button, { backgroundColor: color }]} onPress={onPress}>
-      <Icon color="#fff" size={32} style={styles.icon} />
+    <Pressable 
+      style={[styles.button, { backgroundColor: color }]} 
+      onPress={onPress}
+    >
+      <Icon color="#fff" size={28} style={styles.icon} />
       <Text style={styles.name}>{name}</Text>
     </Pressable>
   );
@@ -25,11 +28,13 @@ const IngredientButton = ({
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingVertical: 10,  // Reducido de 15
+    paddingHorizontal: 16, // Reducido de 20
     borderRadius: 12,
     alignItems: 'center',
+    justifyContent: 'center', // Añadido para centrar contenido
     minWidth: 90,
+    maxHeight: 80, // LÍMITE DE ALTURA AÑADIDO
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
@@ -37,7 +42,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   icon: {
-    marginBottom: 4,
+    marginBottom: 2, // Reducido de 4
   },
   name: {
     fontSize: 12,

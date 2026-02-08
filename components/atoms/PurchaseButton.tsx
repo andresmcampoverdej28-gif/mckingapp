@@ -13,7 +13,7 @@ const PurchaseButton = ({ onPress, disabled = false }: PurchaseButtonProps) => {
       style={[styles.button, disabled && styles.buttonDisabled]}
       onPress={onPress}
       disabled={disabled}
-      android_ripple={{ color: 'rgba(255,255,255,0.2)' }}
+      android_ripple={{ color: 'rgba(255,255,255,0.3)' }}
     >
       <ShoppingBag color="#fff" size={24} />
       <Text style={styles.buttonText}>Comprar Hamburguesa</Text>
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 12,
-    backgroundColor: '#27ae60',
+    backgroundColor: '#10B981', // Verde más vibrante
     paddingVertical: 16,
     paddingHorizontal: 32,
     borderRadius: 12,
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonDisabled: {
-    backgroundColor: '#95a5a6',
-    opacity: 0.6,
+    backgroundColor: '#6B7280', // Gris más neutral
+    opacity: 0.7,
   },
   buttonText: {
     color: '#fff',
