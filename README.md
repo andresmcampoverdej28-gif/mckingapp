@@ -100,4 +100,4 @@ const LAYER_SPACING = 0.6; // Cambiar valor
 
 **⚠️AVISO⚠️: ESTA APLICACIÓN ESTA TOTALMENTE SEPARA DE DICEAPP, DEBIDO A QUE DICHA APP SUFRIO UN ERROR POR IONICONS**
 
-![Funcionamiento](./assets/video/Demostration.mp4)
+![Funcionamiento](./assets/video/Demostration.gif)
