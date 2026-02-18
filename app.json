@@ -19,7 +19,9 @@
         "monochromeImage": "./assets/images/burgerKolossos.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ximench.mckingapp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "output": "static",
@@ -27,6 +29,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-updates",
       [
         "expo-splash-screen",
         {
@@ -47,9 +50,22 @@
         }
       ]
     ],
+    "updates": {
+      "url": "https://u.expo.dev/6483cf7f-be2c-46c6-b8dd-5987799b3930",
+      "enabled": true
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6483cf7f-be2c-46c6-b8dd-5987799b3930"
+      }
     }
   }
 }
