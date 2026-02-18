@@ -101,3 +101,5 @@ const LAYER_SPACING = 0.6; // Cambiar valor
 **⚠️AVISO⚠️: ESTA APLICACIÓN ESTA TOTALMENTE SEPARA DE DICEAPP, DEBIDO A QUE DICHA APP SUFRIO UN ERROR POR IONICONS**
 
 ![Funcionamiento](./assets/video/Demostration.gif)
+
+LINK DE INSTALACION: https://expo.dev/accounts/ximench/projects/mckingapp/builds/b49cbfa2-ec01-4ffa-8423-4938ae141552
